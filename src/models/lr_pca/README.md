@@ -24,3 +24,14 @@ python -m scripts.test_model --run-id lr_raw_100pct_seed42
 `checkpoints/<run_id>/manifest.json` 记录训练耗时，`training_report` 包含各候选的三折分数、最终参数、设备与库版本。该目录包含重载所需的编码器、分词器和 LR 分类器，可离线预测。特征抽取默认批大小为 8。可使用公共训练入口的 `--hyperparameters` 设置 `batch_size`、`device`、`c_values` 和 `max_iter`。
 
 四条件的总体指标见 `results/metrics/<run_id>/test_summary.json`，推理耗时见 `results/predictions/<run_id>/test_<condition>_metadata.json`。条件名为 `clean`、`lowercase`、`typo10` 和 `typo20`。逐句预测、错误案例、语料及权重仅在受控环境交接。
+
+## 首批正式结果（seed 42）
+
+两次实验在 Apple M4 Pro CPU（24 GiB 内存）上运行，按训练文档做三折交叉验证，均选中 C=0.1。每个条件评估固定的 3,453 个测试句，包含 5,648 个标注实体。下列耗时单位为秒，F1 采用严格实体级 micro F1。
+
+- **10% 训练集**（19,006 词、649 个文档），调参及训练用时 14.64 秒。各条件 F1 及推理耗时为 Clean 0.7209（57.69 秒）、Lowercase 0.1808（59.29 秒）、Typo-10 0.6784（59.41 秒）、Typo-20 0.6387（58.28 秒）。
+- **100% 训练集**（203,621 词、946 个文档），调参及训练用时 113.68 秒。各条件 F1 及推理耗时为 Clean 0.7810（57.40 秒）、Lowercase 0.2199（56.45 秒）、Typo-10 0.7385（56.52 秒）、Typo-20 0.6952（56.05 秒）。
+
+100% 训练日志中有 6 次交叉验证拟合达到 300 次迭代上限。最终分类器在 282 次迭代后收敛。10% 模型最终使用 144 次迭代。
+
+两次 checkpoint 目录分别为 `checkpoints/lr_raw_10pct_seed42/`、`checkpoints/lr_raw_100pct_seed42/`，同名目录位于 `results/metrics/` 和 `results/predictions/`。已从八份逐句预测独立复算各实体类别及总体指标，并核对各条件原词序列、标签数和实验矩阵。
