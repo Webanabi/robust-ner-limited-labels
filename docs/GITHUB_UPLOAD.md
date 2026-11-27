@@ -20,7 +20,7 @@
     git clone https://github.com/OWNER/REPO.git
     cd REPO
 
-然后把仓库根目录 AGENTS.md 和 docs/TEAM_START_HERE.md 交给自己的 AI 助手，并说明自己是 Person 2 或 Person 3。仓库里没有语料和权重，队友还需按学校许可通过受控渠道取得 CoNLL 源文件，运行 docs/TEAM_START_HERE.md 的数据准备命令。**只下载仓库文件夹不足以直接训练。**
+然后打开 docs/COPY_PASTE_PROMPTS.md，按自己的角色复制完整提示词给 AI 助手。仓库里没有语料和权重，队友还需按学校许可通过受控渠道取得 CoNLL 源文件，运行 docs/TEAM_START_HERE.md 的数据准备命令。**只下载仓库文件夹不足以直接训练。**
 
 ## 日常协作
 

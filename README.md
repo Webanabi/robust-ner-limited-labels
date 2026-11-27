@@ -2,7 +2,7 @@
 
 本项目比较 CoNLL-2003 上的 CRF、冻结 DistilBERT 表示加 Logistic Regression、以及四种 DistilBERT 微调目标。公共数据处理、噪声生成、实体级评估、结果汇总已实现。CRF 已调用 sklearn-crfsuite 完成 10% 和 100%（seed42）的真实训练和四条件测试；LR/PCA 与 DistilBERT 仍由 Person 2、Person 3 在对应骨架中实现。
 
-**队友及其 AI 请先读 docs/TEAM_START_HERE.md。**当前只推进首批 12 个训练运行和 48 份固定条件测试；其中 CRF 的 2 个训练运行已完成，其余 10 个待完成。实验完成后再集中分析。
+**队友先打开[可复制提示词](docs/COPY_PASTE_PROMPTS.md)，按 Person 2 或 Person 3 复制完整提示词给自己的 coding agent。**当前只推进首批 12 个训练运行和 48 份固定条件测试；其中 CRF 的 2 个训练运行已完成，其余 10 个待完成。实验完成后再集中分析。详细交接见 [TEAM_START_HERE](docs/TEAM_START_HERE.md)。
 
 第一次上传 GitHub 和邀请队友的步骤见 docs/GITHUB_UPLOAD.md。
 

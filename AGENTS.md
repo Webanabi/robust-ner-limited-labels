@@ -2,6 +2,7 @@
 
 - 当前阶段只完成 docs/TEAM_START_HERE.md 中的首批 12 个训练运行和对应 48 份测试评价，再分析结果。CRF 10% 与 100% 已完成；剩余 2 个 lr_raw 和 8 个 DistilBERT。可选消融、多 seed 与 PCA 暂缓。
 - 接手本项目的 AI 先读 docs/TEAM_START_HERE.md、docs/DATA_FORMAT.md、docs/TRAIN_TEST_GUIDE.md 和自己负责的 PERSON_2_GUIDE.md 或 PERSON_3_GUIDE.md。严格区分“已实现”“待实现”和“已实际运行”。
+- Person 2 和 Person 3 的可直接复制提示词见 docs/COPY_PASTE_PROMPTS.md；收到提示词后从代码实现和必要测试开始，不把文档中的计划当成已完成的实验。
 - Person 1 管理 src/data、src/evaluation、src/analysis、src/experiment.py、configs、scripts、app.py 及接口变更。
 - Person 2 主要改 src/models/crf、src/models/lr_pca，并补充自己的训练、预测脚本和测试。
 - Person 3 主要改 src/models/distilbert，并补充自己的训练、预测脚本和测试。

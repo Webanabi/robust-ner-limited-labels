@@ -1,5 +1,7 @@
 # 队友从这里开始
 
+**最简单的启动方式：打开 [COPY_PASTE_PROMPTS.md](COPY_PASTE_PROMPTS.md)，按你的身份复制 Person 2 或 Person 3 的完整提示词，粘贴给已打开本仓库的 coding agent。**提示词已包含文件、步骤、命令和交付标准，下面保留背景与细节供核对。
+
 ## 当前目标
 
 先完成 **12 个训练运行**：6 种模型配置各用 10% 和 100% 训练数据、统一 seed=42。每个训练好的模型都要在 Clean、Lowercase、Typo-10、Typo-20 四种固定测试文本上评估。因此验收时应有 **12 个真实 checkpoint、48 份测试评价**，然后再由三人一起分析结果、写报告和 presentation。其他 seed、PCA、CRF 特征消融都暂缓；它们出现在完整计划中，不属于这一阶段。
