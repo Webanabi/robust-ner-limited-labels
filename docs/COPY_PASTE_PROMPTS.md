@@ -24,5 +24,5 @@
 >
 > 保持四种方法相同的通用预训练起点、原句 batch、优化器更新预算和 checkpoint 选择规则。只依据 config["validation_variants"] 中 Clean、Lowercase、Typo-10 的**平均严格实体级 F1**选择 checkpoint/参数，绝不能用 Test 选择。实现后先跑 python -m unittest discover -s tests -v，并补充 JSD 稳定性、全 O/全实体 batch、word 对齐、长句覆盖、save/load 和预测长度测试。先跑 10% 的四种方法，再跑 100%。每个 model_id 依次运行 python -m scripts.train_model --model-id MODEL_ID --fraction 0.1 --seed 42 和 python -m scripts.test_model --run-id MODEL_ID_10pct_seed42；100% 时改 --fraction 1.0、run_id 中改为 100pct。
 >
-> 设备建议是学校的单张 T4（16 GB 显存、n1-standard-4 的 15 GB 系统内存）或同等级 GPU。先检查 nvidia-smi 和 torch.cuda.is_available()，用 10% 数据、micro-batch 2–4 做显存试跑；一致性方法可能更占显存，可用梯度累积。若学校 GPU 尚不可用，先把模型代码、CPU 小样例测试、配置和可执行命令全部完成，再明确报告缺少的云资源信息；不要在无 GPU 的本机强行启动八次微调，不要编造结果。每次真实运行记录 checkpoint、四条件预测、metadata、训练时间、推理时间和硬件。最后给我：改动文件、测试情况、8 次训练与 32 份评价的真实完成情况、四条件实体级 F1/耗时、产物路径和阻塞项。只提交代码/配置/不含原文的摘要到分支，准备 PR。
+> 首选本机 RTX 3060 Laptop 训练。先运行 nvidia-smi 查看实际显存，并确认 torch.cuda.is_available()。若显存约 6 GB，从 10% 数据、micro-batch=1 试跑，用梯度累积维持有效 batch；显存不足尝试混合精度、缩短窗口或梯度检查点。一致性方法可能比 Clean-only 更占显存。若 batch=1 仍无法稳定运行，再把学校 T4（16 GB 显存）作为备用，不要假设云资源已分配。若任何 GPU 暂不可用，先把模型代码、CPU 小样例测试、配置和可执行命令全部完成，再准确报告阻塞；不要编造结果。每次真实运行记录 checkpoint、四条件预测、metadata、训练时间、推理时间和实际硬件。最后给我：改动文件、测试情况、8 次训练与 32 份评价的真实完成情况、四条件实体级 F1/耗时、产物路径和阻塞项。只提交代码/配置/不含原文的摘要到分支，准备 PR。
 

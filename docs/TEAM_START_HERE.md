@@ -17,10 +17,10 @@
 ## 训练设备怎么分
 
 - **Person 2 的 lr_raw（2 次）**：冻结 DistilBERT 只做特征提取，之后用 scikit-learn LogisticRegression。CPU 可以完成；建议至少 8 GB 系统内存，16 GB 更稳妥，100% 数据会比 10% 慢得多。这是资源起点而非保证，先用 10% 小跑检查内存和耗时。有学校 T4 时可用 GPU 加速特征提取，LR 本身仍可在 CPU 上训练。本项目完整训练集 203621 词，单份 768 维 float32 词向量约 0.58 GiB，实际内存还包括模型、批数据和交叉验证过程。
-- **Person 3 的四种微调（8 次）**：建议使用学校提供的单张 NVIDIA T4（16 GB 显存）或同等级 GPU，不在无独显本机跑完整八次。学校给出的 template-n1-standard-4-T4 对应 4 vCPU、15 GB 系统内存和 1 张 T4；实际是否分配成功要用 nvidia-smi 与 torch.cuda.is_available() 检查。先用 10% 数据、较小 micro-batch（例如 2–4）做显存/耗时试跑，再以梯度累积保持有效 batch；一致性方法要同时处理原文和噪声副本，可能比 Clean-only 更占显存。记录每次实际 batch、设备和训练时间，不假定模板一定可用。
+- **Person 3 的四种微调（8 次）**：首选队友的 RTX 3060 Laptop 笔记本。NVIDIA 的该型号标准规格为 6 GB 显存，但实际机器先用 nvidia-smi 确认；也要检查 torch.cuda.is_available()。按 6 GB 起步时，先用 10% 数据、micro-batch=1 做显存/耗时试跑，并用梯度累积保持有效 batch；显存不足再尝试混合精度、缩短窗口或梯度检查点。普通一致性和实体平衡一致性要同时处理原文/噪声副本，可能比 Clean-only 更占显存。试跑后四种方法应固定同一窗口长度和有效 batch，无法做到时要记录差异。若 batch=1 仍无法稳定运行，可申请学校 T4 模板（16 GB 显存）作为备用。每次记录实际 GPU、batch、窗口长度和训练时间；不要把不同设备的推理速度直接比较。
 - 所有模型的公共评估、汇总和 CPU 单元测试可在普通电脑上运行。模型权重和含原文数据不上传公开 GitHub。
 
-4 vCPU/15 GB 与 T4 16 GB 是 Google Cloud 的[机器规格](https://docs.cloud.google.com/compute/docs/general-purpose-machines)和[GPU 规格](https://docs.cloud.google.com/compute/docs/gpus)；8/16 GB 系统内存建议及 micro-batch 起点是本项目的保守估计，需以真实试跑调整。
+RTX 3060 Laptop 的 6 GB 标准显存见 [NVIDIA 规格](https://www.nvidia.com/en-us/geforce/laptops/30-series/)；备用模板的 4 vCPU/15 GB 与 T4 16 GB 见 Google Cloud 的[机器规格](https://docs.cloud.google.com/compute/docs/general-purpose-machines)和[GPU 规格](https://docs.cloud.google.com/compute/docs/gpus)。Person 2 的系统内存建议及 Person 3 的 micro-batch 起点是本项目估计，需以真实试跑调整。
 
 ## 克隆仓库后先做什么
 

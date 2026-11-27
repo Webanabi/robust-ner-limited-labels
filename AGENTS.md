@@ -11,4 +11,5 @@
 - 任何模型不得用测试集挑参数；PCA 必须每个 CV 折内拟合；实验状态按真实进度记录。
 - data/raw、data/processed、data/splits、checkpoints、results 中的敏感数据与大文件不提交 GitHub。
 - 无 GPU 机器仅运行公共模块与 CPU 测试；不得把人工样例成绩写入真实结果表。
+- Person 3 的 RTX 3060 Laptop 是八次神经模型微调的首选设备；先核实实际显存并小规模试跑，学校 T4 仅作为显存不足时的备用资源。
 

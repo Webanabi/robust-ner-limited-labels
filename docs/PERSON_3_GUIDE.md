@@ -2,7 +2,7 @@
 
 ## 目标与概念
 
-设备：八次完整微调建议用学校的单张 NVIDIA T4（16 GB 显存）或同等级 GPU；学校模板 n1-standard-4-T4 对应 4 vCPU、15 GB 系统内存。先运行 nvidia-smi 和 torch.cuda.is_available()，再用 10% 数据测试显存。micro-batch 可从 2–4 开始，用梯度累积保持目标有效 batch；原文与扰动副本并用的目标可能需要更小 micro-batch。不要在无独显本机启动完整八次训练，实际可用性和耗时以小跑为准。
+设备：八次微调优先在 Person 3 的 RTX 3060 Laptop 上运行。该型号标准显存为 6 GB，但先用 nvidia-smi 查看实际容量，再用 torch.cuda.is_available() 确认 PyTorch 可见 GPU。若为 6 GB，从 10% 数据和 micro-batch=1 开始测显存/耗时，用梯度累积保持目标有效 batch；必要时尝试混合精度、缩短窗口和梯度检查点。原文与扰动副本并用的目标可能比 Clean-only 更占显存。试跑后四种方法尽量固定同一窗口长度和有效 batch。若 batch=1 仍无法稳定运行，学校的单张 T4（16 GB 显存）是备用资源，需确认授权与配额。记录每种方法的真实设备、batch、窗口长度、耗时，避免跨设备直接比速度。
 
 从通用 distilbert/distilbert-base-cased 预训练权重开始，做四种可比的词级 NER 微调：distilbert_clean、distilbert_aug、distilbert_consistency、distilbert_balanced。要回答实体平衡损失是否超越单纯噪声增强与普通一致性，同时检查 Clean F1 是否受损。当前只有 src/models/distilbert/model.py 的 NotImplementedError 骨架；你要实现训练、预测、保存、加载与实验脚本。需要理解交叉熵、softmax、Jensen-Shannon divergence、subword/word_id 对齐、mask、梯度累积和长句滑窗。
 

@@ -1,5 +1,7 @@
 # Google Cloud Notebook 入门
 
+当前 Person 3 优先使用自己的 RTX 3060 Laptop；本指南仅在本地显存不足或无法稳定完成八次微调时，作为学校 T4 的备用操作说明。不要因为有模板就默认开通云资源。
+
 学校提供的 google_cloud_steps.pdf 指示：使用 CityU Gmail 登录 Google Cloud Console，进入 cs5489-gp-<gid> 项目；在 Notebooks 创建区域为 asia-east2（Hong Kong）的 runtime，模板为 template-n1-standard-4-T4；再建同区域 notebook，使用 Connect -> Connect to Runtime。先核实组号、项目权限、GPU 配额、计费规则和学校的实际界面；不要在未确认授权时创建资源。报告里的“约 16 GB 单 GPU”只是规划假设。
 
 连接后在 Notebook 终端或 SSH 会话运行 nvidia-smi 检查 GPU。SSH 若获允许，可在 Console 的 VM/Workbench 界面取得连接方式；不要猜测实例名或公网 IP。clone 团队 GitHub 仓库，创建虚拟环境并安装 requirements-gpu.txt，先运行 python -m unittest discover -s tests -v。数据集来源和许可需先确认；原始 Reuters 文件仅放受控存储，不提交仓库。

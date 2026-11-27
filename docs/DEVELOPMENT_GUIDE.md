@@ -49,7 +49,7 @@ Person 1 负责实验协议、公共数据/扰动/评估/可视化、界面、�
 
 建议 Python 3.10+。公共 CPU 环境安装 requirements.txt；训练环境另装 requirements-gpu.txt。安装过程见 README。真实 CoNLL 数据需由有权限的人依据课程和原始数据许可取得。把含 -DOCSTART- 的 train、valid、test 文件放在 data/raw，并运行 README 中的 prepare_data 命令。已处理的原始词数据同样不要公开提交。初次准备后检查 source_audit.json、各 statistics.json、10% manifest 和 noise_audit；手工抽查数句。测试数据和验证数据保持完整。
 
-若本地原始文件无法取得，--source hf 是可选下载路径，需有网络和 datasets 库；无法确认文档边界时，Person 2 先不要声称完成按文档交叉验证。当前公共模块没有访问真实数据或执行 GPU 训练。
+若本地原始文件无法取得，--source hf 是可选下载路径，需有网络和 datasets 库；无法确认文档边界时，Person 2 先不要声称完成按文档交叉验证。Person 1 本机已准备合法来源待核实的真实数据并完成两次 CRF 训练；尚未执行 GPU 微调。
 
 ## 6. 协议和运行
 
@@ -75,7 +75,7 @@ Person 2：仅在当前训练子集内进行三折 GroupKFold；PCA 和其他拟
 
 ## 9. 云端与 GitHub
 
-云端操作见 GOOGLE_CLOUD_GUIDE.md，包括学校发的 Notebook/T4 模板步骤和授权待确认项。不要假设 GPU 已分配。main 保存公共稳定代码；feature/crf-lr 给 Person 2，feature/distilbert 给 Person 3，feature/evaluation 给 Person 1 的评估工作。先拉取 main，再建分支；小步提交并附运行命令/测试结果；通过 PR 合并。需要共享 API 更改时先提出，避免三个分支分别改标签顺序或 JSONL 字段。模型权重、原始数据、缓存和大结果不进 Git；可用受控渠道传预测和配置。
+Person 3 首选自己的 RTX 3060 Laptop 运行八次微调；学校 T4 的备用操作见 GOOGLE_CLOUD_GUIDE.md，需确认授权和配额。main 保存公共稳定代码；feature/crf-lr 给 Person 2，feature/distilbert 给 Person 3，feature/evaluation 给 Person 1 的评估工作。先拉取 main，再建分支；小步提交并附运行命令/测试结果；通过 PR 合并。需要共享 API 更改时先提出，避免三个分支分别改标签顺序或 JSONL 字段。模型权重、原始数据、缓存和大结果不进 Git；可用受控渠道传预测和配置。
 
 ## 10. 验收与常见问题
 
@@ -85,5 +85,5 @@ Person 2：仅在当前训练子集内进行三折 GroupKFold；PCA 和其他拟
 
 ### 与开题报告的差异
 
-原报告按成员名字分配 CRF、噪声和 demo；本项目按用户新分工改为 Person 1 公共模块、Person 2 两类基线、Person 3 四种微调。原报告的云端 16 GB GPU 是假设，学校提供的 T4 模板也需授权和配额核实。当前工作区已在本地准备数据，但 Git 忽略原始和处理后文本；尚无真实实验成绩，计划中的模型方法均待队友实现。
+原报告按成员名字分配 CRF、噪声和 demo；本项目按用户新分工改为 Person 1 公共模块、Person 2 两类基线、Person 3 四种微调。原报告的云端 16 GB GPU 是假设，学校提供的 T4 模板需授权和配额核实；Person 3 目前有 RTX 3060 Laptop，优先本地试跑。当前工作区已准备数据并完成 CRF 10%/100% 的真实运行，但 Git 忽略原始和处理后文本、权重及逐句结果。LR 与四种微调仍待队友实现。
 
