@@ -1,0 +1,13 @@
+seeds: [42, 123, 2026]
+training_fractions: [1.0, 0.1]
+noise:
+  lowercase_rate: 0.30
+  typo_rate: 0.10
+  lower_probability: 0.50
+  validation_seed: 314159
+  test_seed: 271828
+neural:
+  checkpoint: distilbert/distilbert-base-cased
+  lambda_candidates: [0.1, 0.5, 1.0]
+  selection_conditions: [clean, lowercase, typo10]
+

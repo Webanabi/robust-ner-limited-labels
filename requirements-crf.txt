@@ -1,0 +1,5 @@
+-r requirements.txt
+scikit-learn>=1.4
+sklearn-crfsuite>=0.5
+joblib>=1.3
+

@@ -1,0 +1,18 @@
+core:
+  models: [distilbert_clean, distilbert_aug, distilbert_consistency, distilbert_balanced]
+  fractions: [1.0, 0.1]
+  seeds: [42]
+supplemental:
+  models: [crf, lr_raw]
+  fractions: [1.0, 0.1]
+  seeds: [42]
+repeat:
+  models: [distilbert_clean, distilbert_aug, distilbert_consistency, distilbert_balanced]
+  fractions: [1.0, 0.1]
+  seeds: [123, 2026]
+optional:
+  models: [crf_no_case, crf_no_affix, lr_pca64, lr_pca128]
+  fractions: [1.0, 0.1]
+  seeds: [42, 123, 2026]
+conditions: [clean, lowercase, typo10, typo20]
+
