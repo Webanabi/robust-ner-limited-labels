@@ -97,9 +97,14 @@ class TrainingScriptTests(unittest.TestCase):
 
     def test_unimplemented_model_does_not_claim_training(self):
         root = self.root / "checkpoints"
+
+        class UnimplementedFixture(FixtureOnlyModel):
+            def train(self, train_rows, validation_rows, config):
+                raise NotImplementedError("fixture training intentionally unavailable")
+
         with self.assertRaises(NotImplementedError):
-            run_training("distilbert_clean", 1.0, 42, self.data, root, "model_fixture", {}, {},
-                         matrix_path=None)
+            run_training("fixture_only", 1.0, 42, self.data, root, "model_fixture", {}, {},
+                         matrix_path=None, model_factory=lambda _: UnimplementedFixture())
         self.assertFalse((root / "model_fixture" / "manifest.json").exists())
 
     def test_mismatched_subset_stops_before_training(self):
