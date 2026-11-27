@@ -4,13 +4,11 @@
 
 ## 第一次上传
 
-1. 登录 Webanabi GitHub 账号，在 GitHub 网页点右上角 + → New repository。仓库名可用 robust-ner-limited-labels，Visibility 选 Public。**不要**勾选“Add a README”“Add .gitignore”或“Choose a license”，本地已有文件。点击 Create repository，复制仓库 HTTPS 地址。
-2. 在本项目文件夹打开 PowerShell。项目已经初始化为 main 分支并准备好初始提交时，先运行 git status，确认没有把 data/raw、data/processed、checkpoints、results、两份 PDF 或 .venv 列为待提交文件。然后把下面 OWNER/REPO 换成真实用户名和仓库名：
+1. 公开空仓库已建立：https://github.com/Webanabi/robust-ner-limited-labels 。本地 main 已提交项目文件并配置 origin。现在打开本项目文件夹的 PowerShell，运行 git status，确认工作区干净，再运行：
 
-       git remote add origin https://github.com/OWNER/REPO.git
        git push -u origin main
 
-   如果 GitHub 要求登录，按 Git Credential Manager 打开的网页登录流程完成；不要把密码或 token 写入命令或文件。
+   如果 GitHub 要求登录，按 Git Credential Manager 打开的网页登录流程完成；不要把密码或 token 写入命令或文件。这个命令将本地提交上传到已创建的公开仓库。
 3. 打开 GitHub 仓库页面，检查 README、AGENTS.md、docs/TEAM_START_HERE.md、src/、scripts/、configs/ 是否可见；确认 data/raw/train.txt、data/processed/train.jsonl、checkpoints 下的权重、results 下的逐句预测和两份课程 PDF 均不可见。
 4. 公开仓库任何人都能阅读；若两位队友需要提交代码，仍要在仓库 Settings → Collaborators → Add people，按 GitHub 用户名发送邀请。GitHub 官方说明：https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository 。
 
