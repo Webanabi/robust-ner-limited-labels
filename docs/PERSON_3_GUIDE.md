@@ -2,6 +2,8 @@
 
 ## 目标与概念
 
+设备：八次完整微调建议用学校的单张 NVIDIA T4（16 GB 显存）或同等级 GPU；学校模板 n1-standard-4-T4 对应 4 vCPU、15 GB 系统内存。先运行 nvidia-smi 和 torch.cuda.is_available()，再用 10% 数据测试显存。micro-batch 可从 2–4 开始，用梯度累积保持目标有效 batch；原文与扰动副本并用的目标可能需要更小 micro-batch。不要在无独显本机启动完整八次训练，实际可用性和耗时以小跑为准。
+
 从通用 distilbert/distilbert-base-cased 预训练权重开始，做四种可比的词级 NER 微调：distilbert_clean、distilbert_aug、distilbert_consistency、distilbert_balanced。要回答实体平衡损失是否超越单纯噪声增强与普通一致性，同时检查 Clean F1 是否受损。当前只有 src/models/distilbert/model.py 的 NotImplementedError 骨架；你要实现训练、预测、保存、加载与实验脚本。需要理解交叉熵、softmax、Jensen-Shannon divergence、subword/word_id 对齐、mask、梯度累积和长句滑窗。
 
 依赖 torch、transformers、accelerate，可用 Hugging Face Token Classification 教程 https://huggingface.co/docs/transformers/tasks/token_classification 和课程 https://huggingface.co/docs/course/chapter7/2 作为对齐参考。禁止使用已经在 CoNLL-2003 上训练过的 NER 模型。绝不使用 POS/chunk 作为输入。

@@ -6,7 +6,7 @@
 
 > 你是这个三人 NER 项目的 **Person 2 开发 agent**。请直接在当前仓库修改代码、运行测试、记录真实结果；不要只给建议或伪代码。先读 AGENTS.md、docs/TEAM_START_HERE.md、docs/DATA_FORMAT.md、docs/TRAIN_TEST_GUIDE.md、docs/PERSON_2_GUIDE.md，以及 src/models/base.py、src/models/registry.py、scripts/train_model.py、scripts/test_model.py。当前只做首批 12 次实验：CRF 的 10% 和 100% 已由 Person 1 完成；**你的当前目标是完成 lr_raw 的 10% 和 100% 两次训练及各自四种测试条件，共 2 次训练、8 份评价**。PCA64/128、CRF 消融和多 seed 暂缓。
 >
-> 先在 feature/crf-lr 分支工作。检查 data/raw/train.txt、valid.txt、test.txt 是否存在；如果没有，先完成不依赖真实数据的代码与测试，再向我明确索取学校允许使用的文件。不要把原文、处理后 JSONL、checkpoint、逐句预测或错误案例提交到公开 GitHub。数据就绪后运行 python -m scripts.prepare_data --source local --train data/raw/train.txt --validation data/raw/valid.txt --test data/raw/test.txt --seed 42，核对划分句数和真实 doc_id。
+> 先在 feature/crf-lr 分支工作。检查 data/raw/train.txt、valid.txt、test.txt 是否存在；如果没有，先完成不依赖真实数据的代码与测试，再向我明确索取学校允许使用的文件。不要把原文、处理后 JSONL、checkpoint、逐句预测或错误案例提交到公开 GitHub。数据就绪后运行 python -m scripts.prepare_data --source local --train data/raw/train.txt --validation data/raw/valid.txt --test data/raw/test.txt --seed 42，核对划分句数和真实 doc_id。设备方面，lr_raw 可以用 CPU（建议 16 GB 内存）运行；先用 10% 测耗时，有学校 T4 时可用 GPU 加速冻结特征抽取。设备详情见 docs/TEAM_START_HERE.md。
 >
 > 在 src/models/lr_pca/model.py 实现 **lr_raw** 的 train、predict、save、load。调用 Hugging Face Transformers 提供的通用 distilbert/distilbert-base-cased，冻结 encoder，只抽取原始词的首个 subword 表示；调用 scikit-learn LogisticRegression 训练词级标签分类器。长句要处理完整、每个原词恰有一次预测。按训练子集的真实 doc_id 做三折 GroupKFold 选 LR 参数，任何拟合步骤都不能看官方 Validation/Test；不可使用已在 CoNLL 上微调的 NER checkpoint，也不能用 POS/chunk。预测返回与输入 tokens 同长的 IOB2 标签，统一使用 src/data/dataset.py 的标签映射和修复规则。保存后重新加载应给出同样预测。尽量只改你负责的模型目录和自己的测试；共享接口若确需更改，先说明给 Person 1。
 >
@@ -24,5 +24,5 @@
 >
 > 保持四种方法相同的通用预训练起点、原句 batch、优化器更新预算和 checkpoint 选择规则。只依据 config["validation_variants"] 中 Clean、Lowercase、Typo-10 的**平均严格实体级 F1**选择 checkpoint/参数，绝不能用 Test 选择。实现后先跑 python -m unittest discover -s tests -v，并补充 JSD 稳定性、全 O/全实体 batch、word 对齐、长句覆盖、save/load 和预测长度测试。先跑 10% 的四种方法，再跑 100%。每个 model_id 依次运行 python -m scripts.train_model --model-id MODEL_ID --fraction 0.1 --seed 42 和 python -m scripts.test_model --run-id MODEL_ID_10pct_seed42；100% 时改 --fraction 1.0、run_id 中改为 100pct。
 >
-> 若学校 GPU 尚不可用，先把模型代码、CPU 小样例测试、配置和可执行命令全部完成，再明确报告缺少的云资源信息；不要在无 GPU 的本机强行启动八次微调，不要编造结果。每次真实运行记录 checkpoint、四条件预测、metadata、训练时间、推理时间和硬件。最后给我：改动文件、测试情况、8 次训练与 32 份评价的真实完成情况、四条件实体级 F1/耗时、产物路径和阻塞项。只提交代码/配置/不含原文的摘要到分支，准备 PR。
+> 设备建议是学校的单张 T4（16 GB 显存、n1-standard-4 的 15 GB 系统内存）或同等级 GPU。先检查 nvidia-smi 和 torch.cuda.is_available()，用 10% 数据、micro-batch 2–4 做显存试跑；一致性方法可能更占显存，可用梯度累积。若学校 GPU 尚不可用，先把模型代码、CPU 小样例测试、配置和可执行命令全部完成，再明确报告缺少的云资源信息；不要在无 GPU 的本机强行启动八次微调，不要编造结果。每次真实运行记录 checkpoint、四条件预测、metadata、训练时间、推理时间和硬件。最后给我：改动文件、测试情况、8 次训练与 32 份评价的真实完成情况、四条件实体级 F1/耗时、产物路径和阻塞项。只提交代码/配置/不含原文的摘要到分支，准备 PR。
 

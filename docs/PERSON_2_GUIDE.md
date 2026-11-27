@@ -6,6 +6,8 @@
 
 ## 文件和依赖
 
+设备：lr_raw 可用 CPU 跑，建议至少 8 GB 系统内存，16 GB 更稳妥；先做 10% 试跑。完整 100% 数据的冻结特征抽取更慢。若学校 T4 可用，可用它加速 DistilBERT 前向抽取，LogisticRegression 仍可在 CPU 上拟合。以上是运行建议，具体峰值内存与时间以小跑测量为准；所有运行都要记录硬件与 batch。
+
 修改 src/models/crf/model.py、src/models/lr_pca/model.py，完善各目录 README 并编写必要测试。公共 scripts/train_model.py 和 scripts/test_model.py 已提供统一入口。基类是 src/models/base.py，模型 ID 在 registry.py。建议 sklearn-crfsuite、scikit-learn、transformers、torch；安装 requirements-gpu.txt（CRF 单独用 CPU 可只装 sklearn-crfsuite）。参考 sklearn-crfsuite 文档 https://sklearn-crfsuite.readthedocs.io/ 和 scikit-learn GroupKFold https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html 、Pipeline/PCA https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html 。Transformer 的 word_ids 对齐见 https://huggingface.co/docs/transformers/tasks/token_classification 。
 
 ## CRF 实现顺序

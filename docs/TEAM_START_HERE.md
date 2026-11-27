@@ -14,6 +14,14 @@
 
 当前首批进度：2/12 个训练运行、8/48 份测试评价。以 EXPERIMENT_MATRIX.csv 的对应行及真实结果文件核对，绝不把 planned 改成 completed 来凑数。
 
+## 训练设备怎么分
+
+- **Person 2 的 lr_raw（2 次）**：冻结 DistilBERT 只做特征提取，之后用 scikit-learn LogisticRegression。CPU 可以完成；建议至少 8 GB 系统内存，16 GB 更稳妥，100% 数据会比 10% 慢得多。这是资源起点而非保证，先用 10% 小跑检查内存和耗时。有学校 T4 时可用 GPU 加速特征提取，LR 本身仍可在 CPU 上训练。本项目完整训练集 203621 词，单份 768 维 float32 词向量约 0.58 GiB，实际内存还包括模型、批数据和交叉验证过程。
+- **Person 3 的四种微调（8 次）**：建议使用学校提供的单张 NVIDIA T4（16 GB 显存）或同等级 GPU，不在无独显本机跑完整八次。学校给出的 template-n1-standard-4-T4 对应 4 vCPU、15 GB 系统内存和 1 张 T4；实际是否分配成功要用 nvidia-smi 与 torch.cuda.is_available() 检查。先用 10% 数据、较小 micro-batch（例如 2–4）做显存/耗时试跑，再以梯度累积保持有效 batch；一致性方法要同时处理原文和噪声副本，可能比 Clean-only 更占显存。记录每次实际 batch、设备和训练时间，不假定模板一定可用。
+- 所有模型的公共评估、汇总和 CPU 单元测试可在普通电脑上运行。模型权重和含原文数据不上传公开 GitHub。
+
+4 vCPU/15 GB 与 T4 16 GB 是 Google Cloud 的[机器规格](https://docs.cloud.google.com/compute/docs/general-purpose-machines)和[GPU 规格](https://docs.cloud.google.com/compute/docs/gpus)；8/16 GB 系统内存建议及 micro-batch 起点是本项目的保守估计，需以真实试跑调整。
+
 ## 克隆仓库后先做什么
 
 1. 先读根目录 AGENTS.md、README.md、docs/DATA_FORMAT.md、docs/TRAIN_TEST_GUIDE.md，再读自己的 PERSON_2_GUIDE.md 或 PERSON_3_GUIDE.md。AI 助手也应按这个顺序读。
